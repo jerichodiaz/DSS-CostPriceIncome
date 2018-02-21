@@ -1,10 +1,10 @@
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 
 import java.net.URL;
+import java.util.EventListener;
 import java.util.ResourceBundle;
 
 /**
@@ -15,43 +15,86 @@ public class Control implements Initializable {
     private ToggleGroup group;
     @FXML private TextField cost, price, income;
     @FXML private RadioButton rCost, rPrice, rIncome;
+    @FXML private Slider sCost, sPrice, sIncome;
 
     @FXML private void costChange(){
-        double cost = Double.parseDouble(this.cost.getText());
-        double price = Double.parseDouble(this.price.getText());
-        double income = Double.parseDouble(this.income.getText());
-        if(rPrice.isSelected()){
-            this.income.setText(cost*(price/100)+"");
+        if(!cost.getText().isEmpty() && !cost.getText().matches(".*\\D.*")) {
+            double cost = Double.parseDouble(this.cost.getText());
+            double price = Double.parseDouble(this.price.getText());
+            double income = Double.parseDouble(this.income.getText());
+            if (rPrice.isSelected()) {
+                sIncome.setValue(cost * (price / 100));
+            } else if (rIncome.isSelected())
+                sPrice.setValue((income / cost) * 100.0);
+            else
+                sCost.setValue(cost);
         }
-        else if(rIncome.isSelected())
-            this.price.setText((income/cost)*100.0+"");
         else
-            this.cost.setText(cost+"");
+            sCost.setValue(0);
     }
     @FXML private void priceChange(){
-        double cost = Double.parseDouble(this.cost.getText());
-        double price = Double.parseDouble(this.price.getText());
-        double income = Double.parseDouble(this.income.getText());
-        if(rCost.isSelected()){
-            this.income.setText(cost*(price/100)+"");
+        if(!price.getText().isEmpty() && !price.getText().matches(".*\\D.*")) {
+            double cost = Double.parseDouble(this.cost.getText());
+            double price = Double.parseDouble(this.price.getText());
+            double income = Double.parseDouble(this.income.getText());
+            if (rCost.isSelected()) {
+                sIncome.setValue(cost * (price / 100));
+            } else if (rIncome.isSelected())
+                sCost.setValue((income * 100.0) / price);
+            else
+                sPrice.setValue(price);
         }
-        else if(rIncome.isSelected())
-            this.cost.setText((income*100.0)/price+"");
         else
-            this.price.setText(price+"");
-
+            sPrice.setValue(0);
     }
     @FXML private void incomeChange(){
-        double cost = Double.parseDouble(this.cost.getText());
-        double price = Double.parseDouble(this.price.getText());
-        double income = Double.parseDouble(this.income.getText());
-        if(rPrice.isSelected()){
-            this.cost.setText((income*100.0)/price+"");
+        if(!income.getText().isEmpty() && !income.getText().matches(".*\\D.*")) {
+            double cost = Double.parseDouble(this.cost.getText());
+            double price = Double.parseDouble(this.price.getText());
+            double income = Double.parseDouble(this.income.getText());
+            if (rPrice.isSelected()) {
+                sCost.setValue((income * 100.0) / price);
+            } else if (rCost.isSelected())
+                sPrice.setValue((income / cost) * 100.0);
+            else
+                sIncome.setValue(income);
         }
-        else if(rCost.isSelected())
-            this.price.setText((income/cost)*100.0+"");
         else
-            this.income.setText(income+"");
+            sIncome.setValue(0);
+    }
+    @FXML private void onDragCost(){
+        cost.setText(Math.round(sCost.getValue())+"");
+        costChange();
+    }
+    @FXML private void onDragPrice(){
+        price.setText(Math.round(sPrice.getValue())+"");
+        priceChange();
+    }
+    @FXML private void onDragIncome(){
+        income.setText(Math.round(sIncome.getValue())+"");
+        incomeChange();
+    }
+    @FXML private void disableButtons(){
+        cost.setDisable(rCost.isSelected());
+        price.setDisable(rPrice.isSelected());
+        income.setDisable(rIncome.isSelected());
+        sCost.setDisable(rCost.isSelected());
+        sPrice.setDisable(rPrice.isSelected());
+        sIncome.setDisable(rIncome.isSelected());
+    }
+    @FXML private void randomize(){
+        int x = (int) (Math.random()*100);
+        int y = (int) (Math.random()*100);
+        int z = (int) (Math.random()*100);
+        sCost.setValue(x);
+        sPrice.setValue(y);
+        sIncome.setValue(z);
+        cost.setText(x+"");
+        price.setText(y+"");
+        income.setText(z+"");
+        rPrice.setSelected(true);
+        disableButtons();
+        costChange();
     }
 
     @Override
@@ -61,8 +104,17 @@ public class Control implements Initializable {
         rCost.setSelected(true);
         rPrice.setToggleGroup(group);
         rIncome.setToggleGroup(group);
-        cost.setText("0");
-        price.setText("0");
-        income.setText("0");
+
+        sCost.valueProperty().addListener((ol, ov, nv) -> {
+            onDragCost();
+        });
+        sPrice.valueProperty().addListener((ol, ov, nv) -> {
+            onDragPrice();
+        });
+        sIncome.valueProperty().addListener((ol, ov, nv) -> {
+            onDragIncome();
+        });
+        randomize();
+
     }
 }
