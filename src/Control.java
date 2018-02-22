@@ -1,5 +1,3 @@
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -7,7 +5,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import java.net.URL;
-import java.util.EventListener;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
@@ -16,7 +13,7 @@ import java.util.regex.Pattern;
  * On 2/21/2018
  */
 public class Control implements Initializable {
-    private Pattern regex = Pattern.compile("\\d*\\D\\d*");
+    private Pattern regex = Pattern.compile("(\\d+(?:\\.\\d+)?)");
     private ToggleGroup group;
     @FXML private TextField cost, price, income;
     @FXML private RadioButton rCost, rPrice, rIncome;
@@ -25,7 +22,7 @@ public class Control implements Initializable {
 
 
     @FXML private void savePreviousCost(KeyEvent event) {
-        if (!cost.getText().isEmpty() && !cost.getText().matches(regex.pattern())) {
+        if (!cost.getText().isEmpty() && cost.getText().matches(regex.pattern())) {
             if (event.getCode() == KeyCode.ENTER) {
                 pCost = Double.parseDouble(cost.getText());
                 sCost.setValue(0);
@@ -33,7 +30,7 @@ public class Control implements Initializable {
         }
     }
     @FXML private void savePreviousPrice(KeyEvent event){
-        if (!cost.getText().isEmpty() && !cost.getText().matches(regex.pattern())) {
+        if (!cost.getText().isEmpty() && price.getText().matches(regex.pattern())) {
             if (event.getCode() == KeyCode.ENTER) {
                 pPrice = Double.parseDouble(price.getText());
                 sPrice.setValue(0);
@@ -42,18 +39,18 @@ public class Control implements Initializable {
     }
     @FXML private void savePreviousIncome(KeyEvent event){
 
-        if (!cost.getText().isEmpty() && !cost.getText().matches(regex.pattern())) {
+        if (!cost.getText().isEmpty() && income.getText().matches(regex.pattern())) {
             if (event.getCode() == KeyCode.ENTER) {
-                System.out.println(income.getText().matches("\\d*\\D\\d*"));
                 pIncome = Double.parseDouble(income.getText());
                 sIncome.setValue(0);
-                System.out.println("inside");
             }
         }
     }
 
     @FXML private void costChange(){
-        if(!cost.getText().isEmpty() && !cost.getText().matches(regex.pattern())) {
+        System.out.println(cost.getText());
+        System.out.println(cost.getText().matches(regex.pattern()));
+        if(!cost.getText().isEmpty() && cost.getText().matches(regex.pattern())) {
             if (rPrice.isSelected())
                 calcIncome();
             else if (rIncome.isSelected())
@@ -61,7 +58,7 @@ public class Control implements Initializable {
         }
     }
     @FXML private void priceChange(){
-        if(!cost.getText().isEmpty() && !price.getText().matches(regex.pattern())) {
+        if(!cost.getText().isEmpty() && price.getText().matches(regex.pattern())) {
             if (rCost.isSelected())
                 calcIncome();
             else if (rIncome.isSelected())
@@ -69,7 +66,7 @@ public class Control implements Initializable {
         }
     }
     @FXML private void incomeChange() {
-        if (!cost.getText().isEmpty() && !income.getText().matches(regex.pattern())) {
+        if (!cost.getText().isEmpty() && income.getText().matches(regex.pattern())) {
             if (rPrice.isSelected())
                 calcCost();
             else if (rCost.isSelected())
