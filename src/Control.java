@@ -48,8 +48,6 @@ public class Control implements Initializable {
     }
 
     @FXML private void costChange(){
-        System.out.println(cost.getText());
-        System.out.println(cost.getText().matches(regex.pattern()));
         if(!cost.getText().isEmpty() && cost.getText().matches(regex.pattern())) {
             if (rPrice.isSelected())
                 calcIncome();
@@ -76,35 +74,21 @@ public class Control implements Initializable {
 
     private void calcCost(){
         doubleValues();
-        cost.setText((dIncome * 100.0) / dPrice+"");
+        cost.setText(Math.round((dIncome * 100.0) / dPrice)+"");
     }
     private void calcPrice(){
         doubleValues();
-        price.setText((dIncome / dCost) * 100.0+"");
+        price.setText(Math.round((dIncome / dCost) * 100.0)+"");
     }
     private void calcIncome(){
         doubleValues();
-        income.setText(dCost * (dPrice / 100)+"");
+        income.setText(Math.round(dCost * (dPrice / 100))+"");
     }
 
     private void doubleValues(){
         dCost = Double.parseDouble(this.cost.getText());
         dPrice = Double.parseDouble(this.price.getText());
         dIncome = Double.parseDouble(this.income.getText());
-    }
-
-
-    @FXML private void onDragCost(){
-
-        costChange();
-    }
-    @FXML private void onDragPrice(){
-
-        priceChange();
-    }
-    @FXML private void onDragIncome(){
-
-        incomeChange();
     }
     @FXML private void disableButtons(){
         cost.setDisable(rCost.isSelected());
