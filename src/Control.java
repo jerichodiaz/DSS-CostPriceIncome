@@ -104,17 +104,21 @@ public class Control implements Initializable {
         rCost.setSelected(true);
         rPrice.setToggleGroup(group);
         rIncome.setToggleGroup(group);
+        randomize();
 
         sCost.valueProperty().addListener((ol, ov, nv) -> {
+            while(nv.doubleValue() >= sCost.getMax())
+                sCost.setMax(sCost.getMax()+1);
             onDragCost();
         });
         sPrice.valueProperty().addListener((ol, ov, nv) -> {
             onDragPrice();
         });
         sIncome.valueProperty().addListener((ol, ov, nv) -> {
+            while(nv.doubleValue()>=sIncome.getMax())
+                sIncome.setMax(sIncome.getMax()+1);
             onDragIncome();
         });
-        randomize();
 
     }
 }
