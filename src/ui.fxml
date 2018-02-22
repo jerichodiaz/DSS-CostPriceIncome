@@ -8,9 +8,9 @@
 
 <AnchorPane prefHeight="290.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control">
    <children>
-      <JFXTextField fx:id="cost" focusColor="#0f9d58" labelFloat="true" layoutX="152.0" layoutY="42.0" onAction="#costChange" promptText="Cost" />
-      <JFXTextField fx:id="price" focusColor="#0f9d58" labelFloat="true" layoutX="152.0" layoutY="99.0" onAction="#priceChange" promptText="Price" />
-      <JFXTextField fx:id="income" focusColor="#0f9d58" labelFloat="true" layoutX="152.0" layoutY="148.0" onAction="#incomeChange" promptText="Income" />
+      <JFXTextField onKeyReleased="#savePreviousCost" fx:id="cost" focusColor="#0f9d58" labelFloat="true" layoutX="152.0" layoutY="42.0" onAction="#costChange" promptText="Cost" />
+      <JFXTextField onKeyReleased="#savePreviousPrice" fx:id="price" focusColor="#0f9d58" labelFloat="true" layoutX="152.0" layoutY="99.0" onAction="#priceChange" promptText="Price" />
+      <JFXTextField onKeyReleased="#savePreviousIncome" fx:id="income" focusColor="#0f9d58" labelFloat="true" layoutX="152.0" layoutY="148.0" onAction="#incomeChange" promptText="Income" />
       <JFXSlider fx:id="sCost" layoutX="305.0" layoutY="55.0" prefHeight="25.0" prefWidth="135.0" showTickLabels="true" showTickMarks="true" />
       <JFXSlider fx:id="sPrice" layoutX="305.0" layoutY="112.0" prefHeight="25.0" prefWidth="135.0" showTickLabels="true" showTickMarks="true" />
       <JFXSlider fx:id="sIncome" layoutX="305.0" layoutY="161.0" prefHeight="25.0" prefWidth="135.0" showTickLabels="true" showTickMarks="true" />
